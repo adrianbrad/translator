@@ -1,0 +1,8 @@
+(de(hund),en(dog))
+(de(hund),en)
+(en(dog),de)
+(de(katze),es(gato))
+(es(gato),en(cat))
+(en(cat),fr(chat))
+(de(katze),en)
+(de(katze),fr)

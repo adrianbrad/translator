@@ -3,6 +3,7 @@
 package internal
 
 import (
+	"io"
 	"os"
 	"os/signal"
 	"syscall"
@@ -12,7 +13,7 @@ type CLI interface {
 	Intro()
 	Outro()
 	CallToAction()
-	ResolveAction()
+	ResolveAction() (err error)
 }
 
 func RunCLI(cliMemory CLI) {
@@ -29,6 +30,9 @@ func RunCLI(cliMemory CLI) {
 
 	for {
 		cliMemory.CallToAction()
-		cliMemory.ResolveAction()
+		err := cliMemory.ResolveAction()
+		if err == io.EOF {
+			return
+		}
 	}
 }

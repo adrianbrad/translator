@@ -1,7 +1,10 @@
 package main
 
-import "translator/internal/cmd/translatordbcli"
+import (
+	"os"
+	"translator/internal/cmd/translatordbcli"
+)
 
 func main() {
-	translatordbcli.Run()
+	translatordbcli.Run(os.Stdin)
 }

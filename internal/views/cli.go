@@ -4,19 +4,20 @@ package views
 
 import (
 	"fmt"
+	"io"
 	"regexp"
 	"strings"
 )
 
-type input struct {
-	languageFrom string
-	textFrom     string
+type Input struct {
+	LanguageFrom string
+	TextFrom     string
 
-	languageTo string
-	textTo     string
+	LanguageTo string
+	TextTo     string
 }
 
-func decodeIntoInput(s string) (i input, err error) {
+func DecodeIntoInput(s string) (i Input, err error) {
 	// (s(s),s(s))
 	storeR := regexp.MustCompile(`(\()([a-z]*)(\()([a-z]*)(\))(,)([a-z]*)(\()([a-z]*)(\))(\))`)
 	// (s(s),s)
@@ -40,11 +41,11 @@ func decodeIntoInput(s string) (i input, err error) {
 
 		textTo := getTextBetweenOpenAndCloseRoundBrackets(s)
 
-		i = input{
-			languageFrom: languageFrom,
-			textFrom:     textFrom,
-			languageTo:   languageTo,
-			textTo:       textTo,
+		i = Input{
+			LanguageFrom: languageFrom,
+			TextFrom:     textFrom,
+			LanguageTo:   languageTo,
+			TextTo:       textTo,
 		}
 		return
 	}
@@ -61,10 +62,10 @@ func decodeIntoInput(s string) (i input, err error) {
 
 		languageTo := s[:strings.Index(s, ")")]
 
-		i = input{
-			languageFrom: languageFrom,
-			textFrom:     textFrom,
-			languageTo:   languageTo,
+		i = Input{
+			LanguageFrom: languageFrom,
+			TextFrom:     textFrom,
+			LanguageTo:   languageTo,
 		}
 		return
 	}
@@ -83,11 +84,13 @@ func getTextBetweenOpenAndCloseRoundBrackets(s string) string {
 
 type CLI struct {
 	t translator
+	r io.Reader
 }
 
-func NewCLI(t translator) *CLI {
+func NewCLI(t translator, r io.Reader) *CLI {
 	return &CLI{
 		t: t,
+		r: r,
 	}
 }
 
@@ -102,39 +105,42 @@ func (c *CLI) Outro() {
 func (c *CLI) CallToAction() {
 	fmt.Println("If you wish to store a translation please provide the input using the following format: (en(cat),ge(katze))")
 	fmt.Println("If you wish to get a translation please provide input the using the following format: (en(cat),gb)")
+	fmt.Println(strings.Repeat("-", 8))
+	fmt.Print("Input: ")
 }
 
-func (c *CLI) ResolveAction() {
+func (c *CLI) ResolveAction() (err error) {
 	var cliInput string
-	_, err := fmt.Scanf("%s\n", &cliInput)
+	_, err = fmt.Fscanf(c.r, "%s\n", &cliInput)
 	if err != nil {
 		fmt.Printf("Error while scanning input: %s\n", err.Error())
 		return
 	}
 
-	i, err := decodeIntoInput(cliInput)
+	i, err := DecodeIntoInput(cliInput)
 	if err != nil {
 		fmt.Printf("Error while decoding input: %s\n", err.Error())
 		return
 	}
 
 	// GET translation
-	if i.textTo == "" {
-		textTo, err := c.t.GetTranslation(i.languageFrom, i.textFrom, i.languageTo)
+	if i.TextTo == "" {
+		textTo, err := c.t.GetTranslation(i.LanguageFrom, i.TextFrom, i.LanguageTo)
 		if err != nil {
 			fmt.Printf("Error while getting translation: %s\n", err.Error())
-			return
+			return err
 		}
-		fmt.Println(textTo)
+		fmt.Println("Output:", textTo)
 	} else
 	// STORE translation
 
 	{
-		err := c.t.StoreTranslation(i.languageFrom, i.textFrom, i.languageTo, i.textTo)
+		err := c.t.StoreTranslation(i.LanguageFrom, i.TextFrom, i.LanguageTo, i.TextTo)
 		if err != nil {
 			fmt.Printf("Error while storing translation: %s\n", err.Error())
-			return
+			return err
 		}
 	}
+	fmt.Println(strings.Repeat("-", 8))
 	return
 }

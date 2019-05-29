@@ -1,7 +1,10 @@
 package main
 
-import "translator/internal/cmd/translatormemorycli"
+import (
+	"os"
+	"translator/internal/cmd/translatormemorycli"
+)
 
 func main() {
-	translatormemorycli.Run()
+	translatormemorycli.Run(os.Stdin)
 }
