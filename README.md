@@ -70,6 +70,7 @@
 - Sometimes when running all tests (`make test-all`) testing `/translator/internal/dao` freezes thus blocking execution
 - Some logging could come in handy
 - Maybe add comments in code
+- When running multiple tests that call the `RunWeb` method in one process, there is an issue with the flag as the program tries to reassign the flag in the same process.
 
 ### CLI
 
