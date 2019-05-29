@@ -92,7 +92,7 @@ make test-us-cli-mem
 
 ##### Prerequisites
 
-- A PostgreSQL database and valid credentials to connect passed in the [Makefile](Makefile)
+- A PostgreSQL database and valid credentials to connect passed in the [Makefile](Makefile). And please run the DB schema found in `./db`.
 
 
 ##### Usage
@@ -147,7 +147,7 @@ make test-us-web-mem
 
 ##### Prerequisites
 
-- A PostgreSQL database and valid credentials to connect passed in the [Makefile](Makefile)
+- A PostgreSQL database and valid credentials to connect passed in the [Makefile](Makefile). And please run the DB schema found in `./db`.
 
 ##### Usage
 
