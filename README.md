@@ -17,7 +17,7 @@
         - [Usage](#usage-1)
         - [Run User Story Tests](#run-user-story-tests-1)
     - [Web API](#web-api)
-      - [Exposed endpointes](#exposed-endpointes)
+      - [Exposed endpoints](#exposed-endpoints)
         - [/{langFrom}/{textFrom}/{langTo}](#langfromtextfromlangto)
       - [Memory storage](#memory-storage-1)
         - [Usage](#usage-2)
@@ -62,13 +62,14 @@
 
 ### Description
 
-- Project layout: Go files found at root level can be safely imported by other go packages. In `./cmd` we have very slim `main.go` where we just run the commands built in `./internal/cmd`.
+- Project layout: Go files found at root level can be safely imported by other go packages. In `./cmd` we have very slim `main.go` files where we just run the commands built in `./internal/cmd`.
 - Tests: Relevant tests for the `translator` package are found in `./internal/test/` directory, other tests can be found in the same directory as the objects that are tested, example: `./internal/dao`
 
 ### Known Issues and Improvements possible
 
 - Sometimes when running all tests (`make test-all`) testing `/translator/internal/dao` freezes thus blocking execution
 - Some logging could come in handy
+- Maybe add comments in code
 
 ### CLI
 
@@ -107,7 +108,7 @@ make test-us-cli-db
 
 ### Web API
 
-#### Exposed endpointes
+#### Exposed endpoints
 
 ##### /{langFrom}/{textFrom}/{langTo}
 
@@ -133,12 +134,13 @@ make test-us-cli-db
 
 `
 make run-web-memory
-`cd
+`
 
 ##### Run User Story Tests
 
 `
 make test-us-web-mem
+`
 
 #### Database storage
 
