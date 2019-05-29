@@ -1,16 +1,16 @@
 package userstory
 
 import (
-	"testing"
-	"translator/internal/cmd/translatordbweb"
-	"net/http"
-	"fmt"
-	"translator/internal/views"
-	"os"
 	"bufio"
 	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
 	"strings"
+	"testing"
 	"time"
+	"translator/internal/cmd/translatordbweb"
+	"translator/internal/views"
 )
 
 func TestDBWeb(t *testing.T) {
@@ -29,13 +29,13 @@ func TestDBWeb(t *testing.T) {
 	defer f.Close()
 
 	rd := bufio.NewReader(f)
-    for {
-        line, _, err := rd.ReadLine()
-        if err != nil {
-            return
-        }
+	for {
+		line, _, err := rd.ReadLine()
+		if err != nil {
+			return
+		}
 		i, err := views.DecodeIntoInput(string(line))
-		if err != nil{
+		if err != nil {
 			panic(err)
 		}
 		if i.TextTo == "" {
@@ -48,7 +48,7 @@ func TestDBWeb(t *testing.T) {
 
 			var body map[string]string
 			json.NewDecoder(r.Body).Decode(&body)
-			fmt.Printf("RESPONSE{%s}\n",body["translation"])
+			fmt.Printf("RESPONSE{%s}\n", body["translation"])
 		} else {
 			body := strings.NewReader(fmt.Sprintf(`{"translation": "%s"}`, i.TextTo))
 			req, _ := http.NewRequest("POST", fmt.Sprintf("http://localhost:8080/%s/%s/%s", i.LanguageFrom, i.TextFrom, i.LanguageTo), body)
@@ -57,7 +57,7 @@ func TestDBWeb(t *testing.T) {
 			if err != nil {
 				panic(err)
 			}
-			fmt.Printf("RESPONSE{%s}\n",r.Status)
+			fmt.Printf("RESPONSE{%s}\n", r.Status)
 		}
 	}
 }

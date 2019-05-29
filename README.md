@@ -1,9 +1,12 @@
 # Translator based on a User Story written in GO
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/adrianbrad/translator)](https://goreportcard.com/report/github.com/adrianbrad/translator)
+
 - [Translator based on a User Story written in GO](#translator-based-on-a-user-story-written-in-go)
   - [User Story](#user-story)
   - [Solutions](#solutions)
     - [Description](#description)
+    - [Known Issues and Improvements possible](#known-issues-and-improvements-possible)
     - [CLI](#cli)
       - [Memory storage](#memory-storage)
         - [Usage](#usage)
@@ -22,6 +25,7 @@
         - [Prerequisites](#prerequisites-1)
         - [Usage](#usage-3)
         - [Run User Story Tests](#run-user-story-tests-3)
+  - [Running tests](#running-tests)
 
 ## User Story
 
@@ -59,6 +63,11 @@
 
 - Project layout: Go files found at root level can be safely imported by other go packages. In `./cmd` we have very slim `main.go` where we just run the commands built in `./internal/cmd`.
 - Tests: Relevant tests for the `translator` package are found in `./internal/test/` directory, other tests can be found in the same directory as the objects that are tested, example: `./internal/dao`
+
+### Known Issues and Improvements possible
+
+- Sometimes when running all tests (`make test-all`) testing `/translator/internal/dao` freezes thus blocking execution
+- Some logging could come in handy
 
 ### CLI
 
@@ -123,13 +132,12 @@ make test-us-cli-db
 
 `
 make run-web-memory
-`
+`cd
 
 ##### Run User Story Tests
 
 `
 make test-us-web-mem
-`
 
 #### Database storage
 
@@ -148,3 +156,7 @@ make run-web-db
 `
 make test-us-web-db
 `
+
+## Running tests
+
+`make test-all`

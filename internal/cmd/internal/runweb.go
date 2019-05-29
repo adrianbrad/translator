@@ -4,7 +4,6 @@ package internal
 
 import (
 	"context"
-	"flag"
 	"fmt"
 	"net/http"
 	"os"
@@ -13,9 +12,10 @@ import (
 )
 
 func RunWeb(web http.Handler) {
-	port := flag.Int("p", 8080, "Sets the servers port")
-	flag.Parse()
-
+	// port := flag.Int("p", 8080, "Sets the servers port")
+	// flag.Parse()
+	p := 8080
+	port := &p
 	server := http.Server{
 		Addr:    fmt.Sprintf(":%d", *port),
 		Handler: web,

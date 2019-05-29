@@ -3,8 +3,8 @@
 package userstory
 
 import (
-	"testing"
 	"os"
+	"testing"
 	"translator/internal/cmd/translatormemorycli"
 )
 

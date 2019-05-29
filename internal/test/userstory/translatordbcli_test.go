@@ -1,10 +1,11 @@
 package userstory
 
 import (
-	"testing"
 	"os"
+	"testing"
 	"translator/internal/cmd/translatordbcli"
 )
+
 func TestDBCLI(t *testing.T) {
 	f, err := os.Open("userstory.txt")
 	if err != nil {
