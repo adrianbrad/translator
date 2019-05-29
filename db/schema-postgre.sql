@@ -11,3 +11,5 @@ CREATE TABLE translations_text
   text           TEXT NOT NULL,
   UNIQUE (translation_id, language_tag)
 );
+
+ALTER SEQUENCE translations_translation_id_seq RESTART WITH 1;

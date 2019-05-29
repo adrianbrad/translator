@@ -1,3 +1,5 @@
+// +build web
+
 package views
 
 import (

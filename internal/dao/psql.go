@@ -1,3 +1,5 @@
+// +build db
+
 package dao
 
 import (
@@ -45,7 +47,12 @@ func NewPSQLDao(dbHost, dbPort, dbUser, dbPass, dbName string) *PSQLDao {
 
 func (p *PSQLDao) StoreTranslation(languageFrom language.Tag, textFrom string, languageTo language.Tag, textTo string) (err error) {
 	var id int64
-	p.db.QueryRow(
+	tx, err := p.db.Begin()
+	if err != nil {
+		return
+	}
+
+	tx.QueryRow(
 		`
 SELECT translation_id
 FROM translations_text
@@ -54,6 +61,7 @@ WHERE language_tag=$1
 		`,
 		languageFrom.String(),
 		textFrom).Scan(&id)
+
 	if id == 0 {
 		p.db.QueryRow(
 			`
@@ -68,15 +76,17 @@ INSERT INTO translations_text(
 			`, id, languageFrom.String(), textFrom)
 		if e != nil {
 			err = e
+			tx.Rollback()
 			return
 		}
+
 		ra, _ := res.RowsAffected()
 		if ra != 1 {
 			err = fmt.Errorf("No rows affected by insert query")
+			tx.Rollback()
 			return
 		}
 	}
-
 	res, e := p.db.Exec(
 		`
 INSERT INTO translations_text(
@@ -84,17 +94,21 @@ translation_id, language_tag, text)
 VALUES ($1, $2, $3);			
 		`, id, languageTo.String(), textTo)
 
-	if err != nil {
-		err = e
+	if e != nil {
+		if e.Error() != "pq: duplicate key value violates unique constraint \"translations_text_translation_id_language_tag_key\"" {
+			err = e
+		}
+		tx.Rollback()
 		return
 	}
-
 	ra, _ := res.RowsAffected()
 	if ra != 1 {
 		err = fmt.Errorf("No rows affected by insert query")
+		tx.Rollback()
 		return
 	}
 
+	tx.Commit()
 	return
 }
 
@@ -107,11 +121,11 @@ WHERE language_tag=$1
 	AND translation_id = 	(SELECT translation_id
 							FROM translations_text
 							WHERE language_tag=$2
-								AND text=$3
+								AND text=$3)
 		`,
 		languageTo.String(),
 		languageFrom.String(),
-		textFrom).Scan(wordTo)
+		textFrom).Scan(&wordTo)
 	if wordTo == "" {
 		err = fmt.Errorf("Word not found")
 	}
