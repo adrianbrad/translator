@@ -47,3 +47,6 @@ translator/internal/dao/psql.go:105.13,109.3 3 0
 translator/internal/dao/psql.go:115.130,129.18 2 5
 translator/internal/dao/psql.go:132.2,132.8 1 5
 translator/internal/dao/psql.go:129.18,131.3 1 1
+translator/internal/test/userstory/printread.go:12.55,14.16 2 272
+translator/internal/test/userstory/printread.go:17.2,17.8 1 272
+translator/internal/test/userstory/printread.go:14.16,16.3 1 270

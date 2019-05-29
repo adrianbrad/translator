@@ -1,6 +1,7 @@
 # Translator based on a User Story written in GO
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/adrianbrad/translator)](https://goreportcard.com/report/github.com/adrianbrad/translator)
+[![codecov](https://codecov.io/gh/adrianbrad/translator/branch/master/graph/badge.svg)](https://codecov.io/gh/adrianbrad/translator)
 
 - [Translator based on a User Story written in GO](#translator-based-on-a-user-story-written-in-go)
   - [User Story](#user-story)
